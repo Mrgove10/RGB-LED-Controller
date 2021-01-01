@@ -4,6 +4,7 @@ This is a DIY version of a LED controller. It is used to control RGB 12V LED Str
 
 It supports the Infrared remote control as well as a web interface with esp8266.
 
+![3D render of the pcb](docs/3D.bmp)
 ## Hardware
 
 
