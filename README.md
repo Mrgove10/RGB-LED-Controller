@@ -7,8 +7,7 @@ It supports the Infrared remote control as well as a web interface with esp8266.
 ![3D render of the pcb](docs/3D.bmp)
 ## Hardware
 
-
-### COmponent list
+### Component list
 
 - wemos D1 mini
 - 3x 1k resistor
@@ -30,7 +29,6 @@ the pcb is a 2 layer board, designe in easy EDA
 ![Image of the pcb](docs/board.bmp)
 
 All the PCB files (Gerbers & easyEDA) are in the `hardware` folder.
-
 
 ## Software
 
