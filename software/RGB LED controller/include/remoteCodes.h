@@ -1,13 +1,13 @@
 //source : https://github.com/spiff72/WLED-Updates-TTGO/blob/a91d993c6dc71c060246ebf31bbefd700357b1da/wled00/ir_codes.h
 
-#define IR44_BPLUS         0xFF3AC5  // 
-#define IR44_BMINUS        0xFFBA45  // 
-#define IR44_OFF           0xFF827D  // 
+#define IR44_BPLUS         0xFF3AC5  // DONE
+#define IR44_BMINUS        0xFFBA45  // DONE
+#define IR44_OFF           0xFF827D  // DONE
 #define IR44_ON            0xFF02FD  // 
-#define IR44_RED           0xFF1AE5  // 
-#define IR44_GREEN         0xFF9A65  // 
-#define IR44_BLUE          0xFFA25D  // 
-#define IR44_WHITE         0xFF22DD  // natural white
+#define IR44_RED           0xFF1AE5  // DONE
+#define IR44_GREEN         0xFF9A65  // DONE
+#define IR44_BLUE          0xFFA25D  // DONE
+#define IR44_WHITE         0xFF22DD  // DONE
 #define IR44_REDDISH       0xFF2AD5  // 
 #define IR44_GREENISH      0xFFAA55  // 
 #define IR44_DEEPBLUE      0xFF926D  // 

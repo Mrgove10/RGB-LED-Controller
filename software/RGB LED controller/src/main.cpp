@@ -2,6 +2,7 @@
 #include <IRremoteESP8266.h>
 #include <IRrecv.h>
 #include <IRutils.h>
+#include <EEPROM.h>
 
 #include "remoteCodes.h"
 
@@ -30,26 +31,96 @@ void changeColor(int red, int green, int blue)
 }
 
 /**
- * Turnf off the led strip
+ * Saves a DIY setting to EEprom
  */
-void off()
+void save(int diyNumber)
 {
-  changeColor(0, 0, 0);
+  //http://www.esp8266learning.com/read-and-write-to-the-eeprom-on-the-esp8266.php
+  EEPROM.begin(512);
+  // each one has 3 byte, one pur RGB value
+  switch (diyNumber)
+  {
+  case 1:
+    EEPROM.write(0, RED);
+    EEPROM.write(1, GREEN);
+    EEPROM.write(2, BLUE);
+    break;
+  case 2:
+    EEPROM.write(3, RED);
+    EEPROM.write(4, GREEN);
+    EEPROM.write(5, BLUE);
+    break;
+  case 3:
+    EEPROM.write(6, RED);
+    EEPROM.write(7, GREEN);
+    EEPROM.write(8, BLUE);
+    break;
+  case 4:
+    EEPROM.write(9, RED);
+    EEPROM.write(10, GREEN);
+    EEPROM.write(11, BLUE);
+    break;
+  case 5:
+    EEPROM.write(12, RED);
+    EEPROM.write(13, GREEN);
+    EEPROM.write(14, BLUE);
+    break;
+  case 6:
+    EEPROM.write(15, RED);
+    EEPROM.write(16, GREEN);
+    EEPROM.write(17, BLUE);
+    break;
+  default:
+    break;
+  }
+  EEPROM.commit();
 }
+
+void
 
 /**
  * Execute the command send byh the remote
  */
 void executeRemoteCommand(int hexCommand)
 {
+  // Turn off
   if (hexCommand == IR44_OFF)
   {
-    // Turn off
-    off();
+    changeColor(0, 0, 0);
   }
-  if (hexCommand == IR44_RED)
+  //Brigtness down
+  else if (hexCommand == IR44_BMINUS)
+  {
+    RED = RED - 5;
+    GREEN = GREEN - 5;
+    BLUE = BLUE - 5;
+  }
+  //Brigtness up
+  else if (hexCommand == IR44_BPLUS)
+  {
+    RED = RED + 5;
+    GREEN = GREEN + 5;
+    BLUE = BLUE + 5;
+  }
+  //Full red
+  else if (hexCommand == IR44_RED)
   {
     changeColor(255, 0, 0);
+  }
+  //Full green
+  else if (hexCommand == IR44_GREEN)
+  {
+    changeColor(0, 255, 0);
+  }
+  //Full blue
+  else if (hexCommand == IR44_BLUE)
+  {
+    changeColor(0, 0, 255);
+  }
+  //Full white
+  else if (hexCommand == IR44_WHITE)
+  {
+    changeColor(255, 255, 255);
   }
 }
 
