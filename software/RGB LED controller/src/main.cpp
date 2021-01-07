@@ -4,7 +4,8 @@
 #include <IRutils.h>
 #include <EEPROM.h>
 
-#include "remoteCodes.h"
+#include <thisisatest.h>
+#include <remoteCodes.h>
 
 #define IRRecvPin D8
 #define RMosfet D6
@@ -88,33 +89,33 @@ void load(int diyNumber)
   {
   case 1:
     RED = EEPROM.read(0);
-    GREEN = EEPROM.write(1);
-    BLUE = EEPROM.write(2);
+    GREEN = EEPROM.read(1);
+    BLUE = EEPROM.read(2);
     break;
   case 2:
     RED = EEPROM.read(3);
-    GREEN = EEPROM.write(4);
-    BLUE = EEPROM.write(5);
+    GREEN = EEPROM.read(4);
+    BLUE = EEPROM.read(5);
     break;
   case 3:
     RED = EEPROM.read(6);
-    GREEN = EEPROM.write(7);
-    BLUE = EEPROM.write(8);
+    GREEN = EEPROM.read(7);
+    BLUE = EEPROM.read(8);
     break;
   case 4:
     RED = EEPROM.read(9);
-    GREEN = EEPROM.write(10);
-    BLUE = EEPROM.write(11);
+    GREEN = EEPROM.read(10);
+    BLUE = EEPROM.read(11);
     break;
   case 5:
     RED = EEPROM.read(12);
-    GREEN = EEPROM.write(13);
-    BLUE = EEPROM.write(14);
+    GREEN = EEPROM.read(13);
+    BLUE = EEPROM.read(14);
     break;
   case 6:
     RED = EEPROM.read(15);
-    GREEN = EEPROM.write(16);
-    BLUE = EEPROM.write(17);
+    GREEN = EEPROM.read(16);
+    BLUE = EEPROM.read(17);
     break;
   default:
     break;
@@ -317,6 +318,6 @@ void loop()
   Serial.println(GREEN);
   Serial.println(BLUE);
   Serial.println("----");
-
+  thisisatest();
   delay(100);
 }
