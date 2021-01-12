@@ -1,22 +1,35 @@
+// libraries
 #include <Arduino.h>
 #include <IRremoteESP8266.h>
 #include <IRrecv.h>
 #include <IRutils.h>
 #include <EEPROM.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
 
+//custom libraries
 #include <thisisatest.h>
 #include <remoteCodes.h>
 
+//webpages
+#include <webpages.h>
+//https://lastminuteengineers.com/creating-esp8266-web-server-arduino-ide/
+
+//defines
 #define IRRecvPin D8
 #define RMosfet D6
 #define GMosfet D7
 #define BMosfet D5
+
+const char *ssid = "Livebox-EC80";
+const char *password = "gWbj6RNW6n3mCwwD3A";
 
 int RED = 5;
 int GREEN = 5;
 int BLUE = 5;
 
 IRrecv irrecv(IRRecvPin);
+ESP8266WebServer server(80); //Server on port 80
 
 decode_results results;
 
@@ -284,19 +297,52 @@ void executeRemoteCommand(int hexCommand)
   }
 }
 
+void handle_Root()
+{
+  Serial.println("Request : /");
+  server.send(200, "text/html", MAIN_page);
+}
+
+void handle_NotFound()
+{
+  Serial.println("Request : Not found");
+  server.send(404, "text/html", "404 not found");
+}
+
 void setup()
 {
-  Serial.begin(115200);
-  irrecv.enableIRIn(); // Start the receiver
-  while (!Serial)      // Wait for the serial connection to be establised.
-    delay(50);
-  Serial.println();
-  Serial.print("IRrecvDemo is now running and waiting for IR message on Pin ");
-  Serial.println(IRRecvPin);
-
   pinMode(RMosfet, OUTPUT);
   pinMode(GMosfet, OUTPUT);
   pinMode(BMosfet, OUTPUT);
+
+  Serial.begin(115200);
+
+  irrecv.enableIRIn(); // Start the receiver
+  while (!Serial)      // Wait for the serial connection to be establised.
+    delay(50);
+  Serial.print("IRrecvDemo is now running and waiting for IR message on Pin ");
+  Serial.println(IRRecvPin);
+
+  Serial.print("Connecting to the Newtork");
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    delay(500);
+    Serial.print(".");
+  }
+
+  //If connection successful show IP address in serial monitor
+  Serial.println("");
+  Serial.print("Connected to ");
+  Serial.println(ssid);
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP()); //IP address assigned to your ESP
+
+  server.on("/", handle_Root); //Which routine to handle at root location
+  server.onNotFound(handle_NotFound);
+
+  server.begin(); // Starts the Server
+  Serial.println("Web server started");
 }
 
 void loop()
@@ -308,16 +354,17 @@ void loop()
     executeRemoteCommand(results.value); // execute the hex
     irrecv.resume();                     // Receive the next value
   }
+  server.handleClient(); //Handle client requests
 
   // output the colors
   analogWrite(RMosfet, RED);
   analogWrite(GMosfet, GREEN);
   analogWrite(BMosfet, BLUE);
 
-  Serial.println(RED);
+  /* Serial.println(RED);
   Serial.println(GREEN);
   Serial.println(BLUE);
-  Serial.println("----");
-  thisisatest();
+  Serial.println("----");*/
+  //  thisisatest();
   delay(100);
 }
