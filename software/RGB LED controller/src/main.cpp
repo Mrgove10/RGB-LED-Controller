@@ -3,9 +3,9 @@
 #include <IRremoteESP8266.h>
 #include <IRrecv.h>
 #include <IRutils.h>
-#include <EEPROM.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
+#include <EEPROM.h>
 
 //custom libraries
 #include <thisisatest.h>
@@ -47,7 +47,6 @@ void changeColor(int red, int green, int blue)
 /**
  * Saves a DIY setting to EEprom
  * http://www.esp8266learning.com/read-and-write-to-the-eeprom-on-the-esp8266.php
-
  */
 void save(int diyNumber)
 {
@@ -297,16 +296,61 @@ void executeRemoteCommand(int hexCommand)
   }
 }
 
+/**
+ * /
+ */
 void handle_Root()
 {
   Serial.println("Request : /");
-  server.send(200, "text/html", MAIN_page);
+  server.send(200, "text/html", HTML_index);
 }
 
+/**
+ * 404
+ */
 void handle_NotFound()
 {
   Serial.println("Request : Not found");
   server.send(404, "text/html", "404 not found");
+}
+
+/**
+ * /color
+ */
+void handle_Color()
+{
+  Serial.println("Request : /color");
+
+  // for (int i = 0; i < server.args(); i++)
+  // {
+  //   Serial.println(server.argName(i) + " : " + server.arg(i));
+  // }
+
+  RED = server.arg(0).toInt();
+  GREEN = server.arg(1).toInt();
+  BLUE = server.arg(2).toInt();
+
+  server.send(200, "text/plain", "OK"); //Response to the HTTP request
+}
+
+/**
+ * /power/on
+ */
+void handle_PowerOn()
+{
+  Serial.println("Request : /power/on");
+  changeColor(25, 25, 25);
+  server.send(200, "text/plain", "OK");
+}
+
+/**
+ * /power/off
+ */
+void handle_PowerOff()
+{
+  Serial.println("Request : /power/off");
+  changeColor(0, 0, 0);
+  server.send(200, "text/plain", "OK");
 }
 
 void setup()
@@ -339,6 +383,9 @@ void setup()
   Serial.println(WiFi.localIP()); //IP address assigned to your ESP
 
   server.on("/", handle_Root); //Which routine to handle at root location
+  server.on("/power/on", handle_PowerOn);
+  server.on("/power/off", handle_PowerOff);
+  server.on("/color", handle_Color);
   server.onNotFound(handle_NotFound);
 
   server.begin(); // Starts the Server
@@ -361,10 +408,10 @@ void loop()
   analogWrite(GMosfet, GREEN);
   analogWrite(BMosfet, BLUE);
 
-  /* Serial.println(RED);
+  Serial.println(RED);
   Serial.println(GREEN);
   Serial.println(BLUE);
-  Serial.println("----");*/
+  Serial.println("----");
   //  thisisatest();
   delay(100);
 }
