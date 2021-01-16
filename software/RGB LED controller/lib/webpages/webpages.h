@@ -38,21 +38,36 @@ const char HTML_index[] PROGMEM = R"=====(
 
 <script>
     var colorPicker = new iro.ColorPicker('#picker');
+    httpGetAsync(`/current`, init);
+
+    function init(currentRGBValues) {
+        console.log(currentRGBValues);
+        currentRGBValues = JSON.parse(currentRGBValues);
+        console.log(currentRGBValues);
+        let rgbString = `rgb(${currentRGBValues.R},${currentRGBValues.G}, ${currentRGBValues.B})`
+        console.log(rgbString);
+        colorPicker.setChannel('rgb', 'r', currentRGBValues.R);
+        colorPicker.setChannel('rgb', 'g', currentRGBValues.G);
+        colorPicker.setChannel('rgb', 'b', currentRGBValues.B);
+    }
+
     colorPicker.on('color:change', function (color) {
         // log the current color as a HEX string
         console.log(color.rgb);
-        httpGet(`/color?r=${color.rgb.r}&g=${color.rgb.g}&b=${color.rgb.b}`);
+        httpGetAsync(`/color?r=${color.rgb.r}&g=${color.rgb.g}&b=${color.rgb.b}`, null);
     });
 
-    function httpGet(theUrl) {
+    function httpGetAsync(theUrl, callback) {
         var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", theUrl, false); // false for synchronous request
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", theUrl, true); // true for asynchronous 
         xmlHttp.send(null);
-        return xmlHttp.responseText;
     }
 </script>
 
 </html>
-
 
 )=====";
