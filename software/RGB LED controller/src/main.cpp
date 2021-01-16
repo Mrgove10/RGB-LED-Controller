@@ -353,6 +353,16 @@ void handle_PowerOff()
   server.send(200, "text/plain", "OK");
 }
 
+/**
+ * /current
+ */
+void handle_Current()
+{
+  Serial.println("Request : /current");
+  String m = "{\"R\":" + (String)RED + ",\"G\":" + (String)GREEN + ",\"B\":" + (String)BLUE + "}";
+  server.send(200, "application/json", m);
+}
+
 void setup()
 {
   pinMode(RMosfet, OUTPUT);
@@ -386,6 +396,7 @@ void setup()
   server.on("/power/on", handle_PowerOn);
   server.on("/power/off", handle_PowerOff);
   server.on("/color", handle_Color);
+  server.on("/current", handle_Current);
   server.onNotFound(handle_NotFound);
 
   server.begin(); // Starts the Server
