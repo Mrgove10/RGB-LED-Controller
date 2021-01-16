@@ -5,6 +5,7 @@ This is a DIY version of a LED controller. It is used to control RGB 12V LED Str
 It supports the Infrared remote control as well as a web interface with esp8266.
 
 ![3D render of the pcb](docs/3D.bmp)
+
 ## Hardware
 
 ### Component list
@@ -17,7 +18,8 @@ It supports the Infrared remote control as well as a web interface with esp8266.
 - 3x IRLB8721 N-Type mosfets (https://cdn-shop.adafruit.com/datasheets/irlb8721pbf.pdf)
 - tso 4830 IR LED (https://www.vishay.com/docs/82459/tsop48.pdf)
 
-### basic wireing diagram 
+### basic wireing diagram
+
 ![basic wireing diagram ](https://cdn-learn.adafruit.com/assets/assets/000/002/692/large1024/led_strips_ledstripfet.gif?1448059609)
 
 source : https://learn.adafruit.com/rgb-led-strips/usage
@@ -34,4 +36,13 @@ All the PCB files (Gerbers & easyEDA) are in the `hardware` folder.
 
 The software is arduino made with platform.io
 
-**SOFTWARE IS UNDER CONSTRUCTION**
+### Web interface
+
+The web interface is acceible via the ip of the esp8266. It runs of the port 80.
+
+![webpage screenshot](docs/web.png)
+
+from the web page you can :
+
+  - turn the light on and off
+  - change the color and intesity
